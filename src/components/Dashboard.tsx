@@ -26,7 +26,7 @@ const SkillsRenderer = (params: ICellRendererParams<Employee>): React.JSX.Elemen
 };
 
 const Dashboard = (): React.JSX.Element => {
-  const rowData = useMemo<Employee[]>(() => sampleData, []);
+  const rowData = useMemo<Employee[]>(() => sampleData.employees, []);
 
   const columnDefs = useMemo<ColDef<Employee>[]>(
     () => [

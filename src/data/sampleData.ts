@@ -16,7 +16,8 @@ export interface Employee {
   manager: string | null;
 }
 
-export const sampleData: Employee[] = [
+export const sampleData = {
+  employees: [
   {
     id: 1,
     firstName: "John",
@@ -357,4 +358,5 @@ export const sampleData: Employee[] = [
     skills: ["Google Ads", "Facebook Ads", "Email Marketing"],
     manager: "Michael Brown"
   }
-];
+  ] as Employee[]
+};
