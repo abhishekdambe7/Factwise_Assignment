@@ -7,9 +7,22 @@ import '../styles/Dashboard.scss';
 import '../styles/DataGrid.scss'; // Needed for status-active and status-inactive classes
 
 const StatusRenderer = (params: ICellRendererParams<Employee>): React.JSX.Element => {
-  const value = params.value as Employee['status'];
-  const className = value === 'Active' ? 'status-active' : 'status-inactive';
-  return <span className={className}>{value}</span>;
+  const isActive = params.value as boolean;
+  const className = isActive ? 'status-active' : 'status-inactive';
+  const text = isActive ? 'Active' : 'Inactive';
+  return <span className={className}>{text}</span>;
+};
+
+const NameRenderer = (params: ICellRendererParams<Employee>): React.JSX.Element => {
+  const employee = params.data;
+  if (!employee) return <span></span>;
+  return <span>{employee.firstName} {employee.lastName}</span>;
+};
+
+const SkillsRenderer = (params: ICellRendererParams<Employee>): React.JSX.Element => {
+  const skills = params.value as string[];
+  if (!skills || skills.length === 0) return <span>-</span>;
+  return <span>{skills.join(', ')}</span>;
 };
 
 const Dashboard = (): React.JSX.Element => {
@@ -28,12 +41,21 @@ const Dashboard = (): React.JSX.Element => {
         lockPosition: true
       },
       {
-        field: 'name',
         headerName: 'Name',
         width: 180,
         sortable: true,
         filter: true,
-        resizable: true
+        resizable: true,
+        cellRenderer: NameRenderer,
+        valueGetter: (params) => {
+          if (!params.data) return '';
+          return `${params.data.firstName} ${params.data.lastName}`.trim();
+        },
+        comparator: (valueA, valueB, nodeA, nodeB) => {
+          const nameA = `${nodeA?.data?.firstName || ''} ${nodeA?.data?.lastName || ''}`.trim();
+          const nameB = `${nodeB?.data?.firstName || ''} ${nodeB?.data?.lastName || ''}`.trim();
+          return nameA.localeCompare(nameB);
+        }
       },
       {
         field: 'email',
@@ -52,8 +74,8 @@ const Dashboard = (): React.JSX.Element => {
         resizable: true
       },
       {
-        field: 'role',
-        headerName: 'Role',
+        field: 'position',
+        headerName: 'Position',
         width: 180,
         sortable: true,
         filter: true,
@@ -72,8 +94,8 @@ const Dashboard = (): React.JSX.Element => {
         }
       },
       {
-        field: 'joinDate',
-        headerName: 'Join Date',
+        field: 'hireDate',
+        headerName: 'Hire Date',
         width: 140,
         sortable: true,
         filter: 'agDateColumnFilter',
@@ -89,18 +111,70 @@ const Dashboard = (): React.JSX.Element => {
         }
       },
       {
-        field: 'status',
-        headerName: 'Status',
-        width: 120,
-        cellRenderer: StatusRenderer
+        field: 'age',
+        headerName: 'Age',
+        width: 100,
+        sortable: true,
+        filter: 'agNumberColumnFilter',
+        resizable: true
       },
       {
         field: 'location',
         headerName: 'Location',
-        width: 180,
+        width: 150,
         sortable: true,
         filter: true,
         resizable: true
+      },
+      {
+        field: 'performanceRating',
+        headerName: 'Performance',
+        width: 130,
+        sortable: true,
+        filter: 'agNumberColumnFilter',
+        resizable: true,
+        valueFormatter: (params) => {
+          if (params.value == null) return '';
+          return params.value.toFixed(1);
+        }
+      },
+      {
+        field: 'projectsCompleted',
+        headerName: 'Projects',
+        width: 110,
+        sortable: true,
+        filter: 'agNumberColumnFilter',
+        resizable: true
+      },
+      {
+        field: 'isActive',
+        headerName: 'Status',
+        width: 120,
+        cellRenderer: StatusRenderer,
+        filter: 'agSetColumnFilter',
+        filterParams: {
+          values: [true, false]
+        }
+      },
+      {
+        field: 'skills',
+        headerName: 'Skills',
+        width: 250,
+        sortable: false,
+        filter: true,
+        resizable: true,
+        cellRenderer: SkillsRenderer
+      },
+      {
+        field: 'manager',
+        headerName: 'Manager',
+        width: 180,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        valueFormatter: (params) => {
+          return params.value || '-';
+        }
       }
     ],
     []
