@@ -1,0 +1,64 @@
+// Variables
+$color-bg: #ffffff;
+$color-border: #e1e8ed;
+$color-text-primary: #1a202c;
+$color-text-secondary: #718096;
+
+$spacing-header-padding: 14px 24px;
+$spacing-header-padding-mobile: 20px 24px;
+$spacing-title-margin: 4px 0 0 0;
+$spacing-max-width: 1600px;
+
+$font-size-title: 28px;
+$font-size-title-mobile: 24px;
+$font-size-subtitle: 14px;
+$font-size-subtitle-mobile: 13px;
+
+$font-weight-title: 600;
+$font-weight-subtitle: 400;
+
+$border-width: 1px;
+$border-radius-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+$letter-spacing-title: -0.5px;
+
+.app-header {
+  background: $color-bg;
+  border-bottom: $border-width solid $color-border;
+  box-shadow: $border-radius-shadow;
+  padding: $spacing-header-padding;
+
+  .header-content {
+    max-width: $spacing-max-width;
+    margin: 0 auto;
+  }
+
+  .app-title {
+    margin: 0;
+    font-size: $font-size-title;
+    font-weight: $font-weight-title;
+    color: $color-text-primary;
+    letter-spacing: $letter-spacing-title;
+  }
+
+  .app-subtitle {
+    margin: $spacing-title-margin;
+    font-size: $font-size-subtitle;
+    color: $color-text-secondary;
+    font-weight: $font-weight-subtitle;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: $spacing-header-padding-mobile;
+
+    .app-title {
+      font-size: $font-size-title-mobile;
+    }
+
+    .app-subtitle {
+      font-size: $font-size-subtitle-mobile;
+    }
+  }
+}
+
